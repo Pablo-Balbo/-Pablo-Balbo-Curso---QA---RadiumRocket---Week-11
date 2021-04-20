@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const port = 4000;
+const newUsers = [];
 
 app.use(cors());
 app.use(express.json());
@@ -25,7 +26,8 @@ var handleRegister = function(req, res){
   if(!newUser.name || !newUser.email || !newUser.pass){
     return res.status(400).json({ msg: 'Please, enter a name, email and a password'});          
   } else {
-    return res.json({result: 'Success!'})
+    newUsers.push(newUser);
+    return res.json({result: 'Success!'});
   }
 };
 
@@ -35,11 +37,16 @@ var handleLogin = function(req, res){
     email: req.body.email,
     pass: req.body.password
   };
-  if (registeredUser.email && registeredUser.pass) {
-    return res.json({result: 'Success!'});
-  } else {
-    return res.status(400).json({msg: 'User does not exist'});
+  for (let i = 0; i < newUsers.length; i++) {
+    if(newUsers[i].email === registeredUser.email){
+      if(newUsers[i].pass === registeredUser.pass){
+        return res.json({result: 'Successfull!'});
+      } else {
+        return res.status(400).json({msg: 'Password do not match'});
+      }
+    }
   }
+  return res.status(400).json({msg: 'User does not exist'});
 };
 
 app.post('/register', handleRegister);
