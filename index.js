@@ -7,10 +7,7 @@ const newUsers = [];
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-
-app.get('/', (req, res) => {
-  res.send('Hello world!')
-});
+app.use(express.static('public'));
 
 app.listen(port, () => {
   console.log(`Server initializated at port: ${port}`)
@@ -21,9 +18,9 @@ var handleRegister = function(req, res){
   const newUser = {
     name: req.body.fullName,
     email: req.body.email,
-    pass: req.body.password
+    password: req.body.password
   };
-  if(!newUser.name || !newUser.email || !newUser.pass){
+  if(!newUser.name || !newUser.email || !newUser.password){
     return res.status(400).json({ msg: 'Please, enter a name, email and a password'});          
   } else {
     newUsers.push(newUser);
@@ -35,18 +32,18 @@ var handleLogin = function(req, res){
   console.log(req.body);
   const registeredUser = {
     email: req.body.email,
-    pass: req.body.password
+    password: req.body.password
   };
   for (let i = 0; i < newUsers.length; i++) {
     if(newUsers[i].email === registeredUser.email){
-      if(newUsers[i].pass === registeredUser.pass){
+      if(newUsers[i].password === registeredUser.password){
         return res.json({result: 'Successfull!'});
       } else {
-        return res.status(400).json({msg: 'Password do not match'});
+        return res.status(404).json({msg: 'Password do not match'});
       }
     }
   }
-  return res.status(400).json({msg: 'User does not exist'});
+  return res.status(404).json({msg: 'User not found'});
 };
 
 app.post('/register', handleRegister);
