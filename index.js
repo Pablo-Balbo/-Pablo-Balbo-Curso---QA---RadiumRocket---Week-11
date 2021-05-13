@@ -21,7 +21,7 @@ var handleRegister = function(req, res){
     password: req.body.password
   };
   if(!newUser.name || !newUser.email || !newUser.password){
-    return res.status(400).json({ msg: 'Please, enter a name, email and a password'});          
+    return res.status(400).json({ msg: 'Please, enter a name, an email and a password'});
   } else {
     newUsers.push(newUser);
     return res.json({result: 'Success!'});
@@ -39,11 +39,11 @@ var handleLogin = function(req, res){
       if(newUsers[i].password === registeredUser.password){
         return res.json({result: 'Successfull!'});
       } else {
-        return res.status(404).json({msg: 'Password do not match'});
+        return res.status(404).json({result: 'Password not match'});
       }
     }
   }
-  return res.status(404).json({msg: 'User not found'});
+  return res.status(404).json({result: 'User not found'});
 };
 
 app.post('/register', handleRegister);

@@ -55,35 +55,34 @@ password.onfocus = function(e){
 
 submitForm.onsubmit = function(e){
     e.preventDefault();
-    fetch(`http://localhost:4000/login`,{
-        method: 'PUT',
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify({
-            email: email.value,
-            password: password.value,
+    if (flagEmail && flagPassword) {
+        fetch(`http://localhost:4000/login`,{
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email.value,
+                password: password.value,
+            })
         })
-    })
-    .then (response => response.json())
-    .then (info => {
-        if (flagEmail && flagPassword){
-            const inputs = form.querySelectorAll('input');
-            // error.innerHTML = '';
-            inputs.forEach(function(){
-                error.style.display = 'flex';
+        .then (response => response.json())
+        .then (info => {
+            error.style.display = 'flex';
+            error.style.fontSize = '20px';
+            if (info.result === 'Successfull!') {            
                 error.style.color = 'green';
                 error.innerHTML = 'Login Success!';
-            });
-            console.log(info);
-        } else {
-            error.style.display = 'flex';
-            error.style.color = 'red';
-            error.style.fontSize = '20px';
-            error.innerHTML = 'Please, check your data';
-        }
-    }) 
-    .catch(function(error){
-        console.log('Error trying to send the data')
-    });
+            } else {
+                error.style.color = 'red';
+                error.innerHTML = 'Please, check your data';
+            }
+        })
+        .catch(function(){
+            console.log('Error trying to send the data')
+        });
+    } else {
+        error.style.color = 'red';
+        error.innerHTML = 'Please, enter a valid email and password';
+    }
 };

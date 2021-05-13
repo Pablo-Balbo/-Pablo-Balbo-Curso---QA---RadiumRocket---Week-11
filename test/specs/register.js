@@ -83,7 +83,7 @@ describe('Testing Register page', () => {
     
         it('Check if error span email is not displayed', () => {
             RegisterPage.open();
-            RegisterPage.email.addValue('pablo@balbo.com');
+            RegisterPage.email.addValue('pabloabalbo@hotmail.com');
             RegisterPage.password.click();
     
             let isSpanEmailDisplayed = RegisterPage.spanEmail.isDisplayed();
@@ -259,37 +259,20 @@ describe('Testing Register page', () => {
         it('Check login button', () => {
             RegisterPage.open();
             RegisterPage.login();
+
+            expect(browser).toHaveUrl('http://localhost:4000/public/login.html');
         });
         
         it('Check submit button', () => {
             RegisterPage.open();
             RegisterPage.fullName.addValue('Pablo Balbo');  
-            RegisterPage.email.addValue('pablo@balbo.com')
+            RegisterPage.email.addValue('pabloabalbo@hotmail.com')
             RegisterPage.password.addValue('asdQWE12');
             RegisterPage.confirmPassword.addValue('asdQWE12');
             RegisterPage.submit();
-        
-            const isErrorDivDisplayed = RegisterPage.error.isDisplayed();
-            expect(isErrorDivDisplayed).toBeTrue;
-        });
 
-        // describe('Checking selectors', () => {
-        //     it('Open register page and add values to the inputs and reset', () => {
-        //         RegisterPage.open();
-        //         RegisterPage.fullName.addValue('Pablo'); 
-        //         RegisterPage.email.addValue('andres')
-        //         RegisterPage.password.addValue('balbo');
-        //         RegisterPage.confirmPassword.addValue('lucila');
-        //         RegisterPage.resetBtn.click()
-        //         browser.pause(3000);
-    
-        //         let result = RegisterPage.resetBtn.isClickable();
-        //         console.log('RESULTADO: ' + result);
-    
-        //         const fullNameValue = RegisterPage.fullName.getValue();
-        //         expect(fullNameValue).toBe('');
-    
-                // WHY BUTTON RESET DOESNT WORK?
-            // });
+            const errorText = RegisterPage.error.getText();
+            expect(errorText).toContain('Pablo Balbo: pabloabalbo@hotmail.com');
+        });
     });
 });

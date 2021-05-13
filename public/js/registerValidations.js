@@ -103,35 +103,35 @@ confirmPassword.onfocus = function(e){
 
 submitForm.onsubmit = function(e){
     e.preventDefault();
-    fetch(`http://localhost:4000/register`, {
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify({
-            fullName: fullName.value,
-            email: email.value,
-            password: password.value,
+    if (flagFullName && flagEmail && flagPassword && flagConfirmPassword) {
+        fetch(`http://localhost:4000/register`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                fullName: fullName.value,
+                email: email.value,
+                password: password.value,
+            })
         })
-    })
-    .then (response => response.json())
-    .then (info => {
-        if(flagFullName && flagEmail && flagPassword && flagConfirmPassword){
-            const inputs = form.querySelectorAll('input');
-            error.innerHTML = '';
-            inputs.forEach(function(input){
-                error.style.display = 'flex';
-                error.style.color = 'green';
-                error.innerHTML += input.name + ': ' + input.value + '</br>';
-            });
-            console.log(info);
-        } else {
+        .then (response => response.json())
+        .then (info => {
             error.style.display = 'flex';
-            error.style.color = 'red';
             error.style.fontSize = '20px';
-            error.innerHTML = 'Please, check your data';
-        }})
-    .catch(function(error){
-        console.log('Error trying to send the data')
-    });
+            if (info.result === 'Success!') {
+                error.style.color = 'green';
+                error.innerHTML = fullName.value + ': ' + email.value + '</br>';
+            } else {
+                error.style.color = 'red';
+                error.innerHTML = 'Please, check your data';
+            }
+        })
+        .catch(function(error){
+            console.log('Error trying to send the data')
+        });
+    } else {
+        error.style.color = 'red';
+        error.innerHTML = 'Please, enter a name, an email and a password';
+    }
 };

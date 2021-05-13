@@ -4,7 +4,7 @@
   "description": "Practice \u001b[A\u001b[A\u001bWeek\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[3~\u001b[C\u001b[C\u001b[C\u001b[C\u001b[\u001b[B\u001b[B\u001b[C\u001b[C 11\u001bWeek\u001b[C\u001b[D \u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[D\u001b[C- Radium Rocket QA course",
   "main": "index.js",
   "scripts": {
-    "test": "npx wdio run ./wdio.conf.js --spec register.js",
+    "test": "npx wdio run ./wdio.conf.js --spec register.js login.js e2eTest.js",
     "start": "nodemon index.js",
     "dev": "nodemon --watch index.js"
   },
